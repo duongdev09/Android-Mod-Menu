@@ -14,15 +14,12 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Setup Android NDK
-      uses: nttld/setup-ndk@v2
+      uses: nttld/setup-ndk@v1
       with:
         ndk-version: r25b
-        android-version: 31
 
     - name: Run ndk-build
-      run: |
-        cd jni
-        ${{ env.ANDROID_NDK_HOME }}/ndk-build
+      run: ndk-build
 
     - name: Upload Artifacts (.so files)
       uses: actions/upload-artifact@v4
