@@ -19,7 +19,16 @@ jobs:
         ndk-version: r25b
 
     - name: Run ndk-build
-      run: ndk-build
+      run: |
+        MK_PATH=$(find . -name "Android.mk" | head -n1)
+        if [ -z "$MK_PATH" ]; then
+          echo "Không tìm thấy file Android.mk trong repo"
+          exit 1
+        fi
+        PROJECT_PATH=$(dirname "$(dirname "$MK_PATH")")
+        echo "Android.mk: $MK_PATH"
+        echo "NDK_PROJECT_PATH: $PROJECT_PATH"
+        ndk-build NDK_PROJECT_PATH="$PROJECT_PATH"
 
     - name: Upload Artifacts (.so files)
       uses: actions/upload-artifact@v4
